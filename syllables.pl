@@ -30,9 +30,11 @@ if ($latinQ) {
   @diphthongs = qw(ae oe ph th qu au  );
   @triphthongs = qw(qui qua que gui gua gue);
 } elsif ($polishQ) {
-  @diphthongs = qw(sk cz sz rz ch ie ia dz iu io ió ię ią);
+  @diphthongs = qw(kr sk cz sz rz ch ie ia dz iu io ió ię ią);
+  @triphthongs = qw(krz);
 } else {
-  @diphthongs = qw(sk cz sz rz ch ie ia dz iu io ió ią ię);
+  @diphthongs = qw(kr sk cz sz rz ch ie ia dz iu io ió ią ię);
+  @triphthongs = qw(krz);
 }
 
 
@@ -253,15 +255,26 @@ sub checkTriphthongs {
 sub checkForEnd {
   my ($prev, $curr, $next, $curK, @lett) = @_;
 
+  my $nextK2 = $curK + 2;
+  my $next2 = $lett[$nextK2];
+
+  my $nextK3 = $curK + 3;
+  my $next3 = $lett[$nextK3];
+
     ## samogłoska przy samogłosce (swo-ich)
     if (checkType($curr) eq "v") {
       return 1;
     ## spółgloska i samogłoska po samogłosce
     } elsif (checkType($curr) eq "c" && checkType($next) eq "v") {
       return 1;
+    } elsif (checkTriphthongs($curr, $next, $next2)) {
+      if (checkType($next3) eq "v") {
+        return 1;
+      } else {
+        return 0;
+      }
+
     } elsif (checkDiphthongs($curr, $next)) {
-      my $nextK2 = $curK + 2;
-      my $next2 = $lett [$nextK2];
       if (checkType($next2) eq "v") {
         return 1;
       } else {
