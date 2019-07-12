@@ -28,13 +28,13 @@ my @triphthongs;
 
 if ($latinQ) {
   @diphthongs = qw(ae oe ph th qu au  );
-  @triphthongs = qw(qui qua que gui gua gue);
+  @triphthongs = qw(qui qua que quo gui gua gue);
 } elsif ($polishQ) {
-  @diphthongs = qw(kr sk cz sz rz ch ie ia dz iu io ió ię ią);
-  @triphthongs = qw(krz);
+  @diphthongs = qw(gr tw kr sk cz sz rz ch ie ia dz iu io ió ię ią);
+  @triphthongs = qw(grz krz);
 } else {
-  @diphthongs = qw(kr sk cz sz rz ch ie ia dz iu io ió ią ię);
-  @triphthongs = qw(krz);
+  @diphthongs = qw(gr tw sk kr cz sz rz ch ie ia dz iu io ió ią ię);
+  @triphthongs = qw(grz krz);
 }
 
 
@@ -140,28 +140,42 @@ for (my $i = 0; $i < @line; $i++) {
           }
 
           $k++;
-          # body...
 
-        } elsif (checkDiphthongs($previous, $letters[$k])) {
-          $syllables[$syllableCount] .= "$letters[$k]";
-          $previous = $letters[$k];
+
 
 
         } elsif (!$vowelQ) {
-          $syllables[$syllableCount] .= "$letters[$k]";
-          $previous = $letters[$k];
-
-        } elsif ($vowelQ) {
-          if (checkForEnd($previous, $letters[$k], $next, $k, @letters)) {
-            $syllables[$syllableCount] .= "-";
-            $syllableCount++;
+          if (checkDiphthongs($previous, $letters[$k])) {
             $syllables[$syllableCount] .= "$letters[$k]";
             $previous = $letters[$k];
-            $vowelQ = "";
           } else {
             $syllables[$syllableCount] .= "$letters[$k]";
             $previous = $letters[$k];
           }
+
+
+        } elsif ($vowelQ) {
+
+          if ($type eq "v" && checkDiphthongs($previous, $letters[$k])) {
+              $syllables[$syllableCount] .= "$letters[$k]";
+              $previous = $letters[$k];
+
+          } else {
+
+            if (checkForEnd($previous, $letters[$k], $next, $k, @letters)) {
+              $syllables[$syllableCount] .= "-";
+              $syllableCount++;
+              $syllables[$syllableCount] .= "$letters[$k]";
+              $previous = $letters[$k];
+              $vowelQ = "";
+            } else {
+              $syllables[$syllableCount] .= "$letters[$k]";
+              $previous = $letters[$k];
+            }
+
+          }
+
+
 
         }
 
