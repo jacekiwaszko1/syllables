@@ -31,10 +31,10 @@ if ($latinQ) {
   @triphthongs = qw(qui qua que quo gui gua gue);
 } elsif ($polishQ) {
   @diphthongs = qw(gr tw kr sk cz sz rz ch ie ia dz iu io ió ię ią);
-  @triphthongs = qw(grz krz);
+  @triphthongs = qw(grz krz prz);
 } else {
   @diphthongs = qw(gr tw sk kr cz sz rz ch ie ia dz iu io ió ią ię);
-  @triphthongs = qw(grz krz);
+  @triphthongs = qw(grz krz prz);
 }
 
 
