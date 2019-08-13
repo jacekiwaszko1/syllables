@@ -43,8 +43,11 @@ if ($latinQ) {
 my @syllables;
 my $syllableCount = 0;
 
-foreach my $zzlines (@line) {
-  $zzlines = encode 'utf-8', $zzlines;
+if ( -t STDIN) {
+} else {
+  foreach my $zzlines (@line) {
+    $zzlines = encode 'utf-8', $zzlines;
+  }
 }
 
 
