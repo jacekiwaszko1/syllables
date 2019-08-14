@@ -22,7 +22,7 @@ my @line = <>;
 
 my @vowels = qw(a ą e ę i o ó u y æ);
 my @consonants = qw(b c ć d f g h j k l ł m n ń p q r s ś t v w x z ź ż);
-my @interpunctions = qw(, . ; : ? ! " );
+my @interpunctions = qw(, . ; : ? ! " ' "(" ")" );
 my @diphthongs;
 my @triphthongs;
 
@@ -216,7 +216,7 @@ sub checkType {
   my @interpQ;
   my $type;
 
-  if ($letter eq "?" || $letter eq "(" || $letter eq ")") {
+  if ($letter eq "?" || $letter eq "(" || $letter eq ")" || $letter eq "[" || $letter eq "]" || $letter eq "/" || $letter eq "\\" ) {
     $type = "i";
     return $type;
   } else {
@@ -262,12 +262,14 @@ sub checkDiphthongs {
 
 sub checkTriphthongs {
   my ($first, $second, $third) = @_;
-
-  my @triphQ = grep(/^$first$second$third$/i, @triphthongs);
-  if (@triphQ > 0) {
-    return 1;
+  if (checkType($first) eq "i" || checkType($second) eq "i" || checkType($third) eq "i" ) {
+    return 0;
+  } else {
+    my @triphQ = grep(/^$first$second$third$/i, @triphthongs);
+    if (@triphQ > 0) {
+      return 1;
+    }
   }
-
 }
 
 #############################
