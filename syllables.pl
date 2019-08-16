@@ -68,6 +68,8 @@ foreach my $diphs (@diphthongs) {
 for (my $i = 0; $i < @line; $i++) {
   chomp $line[$i];
   #print $line[$i], "\t";
+
+
   my @words = split(" ", $line[$i]);
   my $previous;
   my $next;
@@ -77,6 +79,9 @@ for (my $i = 0; $i < @line; $i++) {
     my @letters = split("", $encWord);
     my $vowelQ;
     for (my $k = 0; $k < @letters; $k++) {
+      if ($letters[$k] =~ /^\s$/) {
+        $letters[$k] = "";
+      }
 
       my $type = checkType($letters[$k]);
 
