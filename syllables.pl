@@ -11,10 +11,12 @@ Getopt::Long::Configure("bundling");
 
 my $latinQ;
 my $polishQ;
+my $humQ;
 
 GetOptions (
 "l|latin" => \$latinQ,
 "p|polish" => \$polishQ,
+"h|humdrum" => \$humQ,
 );
 
 
@@ -30,7 +32,7 @@ if ($latinQ) {
   @diphthongs = qw(ae oe ph th qu au  );
   @triphthongs = qw(qui qua que quo gui gua gue);
 } elsif ($polishQ) {
-  @diphthongs = qw(gr tw kr sk cz sz rz ch ie ia dz iu io ió ię ią);
+  @diphthongs = qw(gr tw kr sk cz sz rz ch ie ia dz iu io ió ię ią eu au);
   @triphthongs = qw(grz krz prz);
 } else {
   @diphthongs = qw(gr tw sk kr cz sz rz ch ie ia dz iu io ió ią ię);
@@ -205,7 +207,61 @@ for (my $i = 0; $i < @line; $i++) {
   #print "\n";
 }
 
-print @syllables;
+## print data as humdrum spines.
+if ($humQ) {
+  my @verse;
+  my $verseNumber = 0;
+  my $wordON;
+
+  for (my $l = 0; $l < @syllables; $l++) {
+    if ($syllables[$l] =~ /^\n\n/ && $verse[$verseNumber]) {
+      $verse[$verseNumber] .= "*-\n";
+      $verseNumber++;
+    }
+    if (!$verse[$verseNumber] && $syllables[$l + 1]) {
+      $verse[$verseNumber] .= "**text\n*verse$verseNumber\n";
+    }
+
+    my $syllable = $syllables[$l];
+    $syllable =~ s/\n//g;
+
+    if ($syllable eq "") {
+      next;
+    }
+
+    if (!$wordON) {
+      $verse[$verseNumber] .= "$syllable\n";
+    } else {
+      $verse[$verseNumber] .= "-$syllable\n";
+    }
+
+    if ($syllables[$l] =~ /-$/) {
+      $wordON = 1;
+    } else {
+      $wordON = 0;
+    }
+
+  }
+
+  my @humOutput;
+  for (my $m = 0; $m < @verse; $m++) {
+    my @oneVerse = split("\n", $verse[$m]);
+    for (my $n = 0; $n < @oneVerse; $n++) {
+      $humOutput[$n] .= $oneVerse[$n];
+      if ($m + 1 < @verse) {
+        $humOutput[$n] .= "\t";
+      }
+
+    }
+
+  }
+
+  print join("\n", @humOutput);
+
+} else {
+  print @syllables;
+}
+
 
 
 
@@ -318,4 +374,11 @@ sub checkForEnd {
 
 
 
+}
+
+sub checkWhatsNext {
+  my ($currentI, @syll) = @_;
+  my $nextI = $currentI + 1;
+  my $nextSyll = $syll[$nextI];
+  return $nextSyll;
 }
