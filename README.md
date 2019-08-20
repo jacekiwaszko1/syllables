@@ -1,3 +1,5 @@
+## SYLLABLES
+
 ##### Overview
 
 **syllables** is a perl script that devides words into syllables and adds hyphenation.
@@ -23,12 +25,13 @@ It is not based on TeX or any other algorithm, it does not use any dictionary.
 
 ##### Usage
 
-`syllables -[lp] text-file`
+`syllables -[lph] text-file`
 
 ###### Options
 
 - `-l, --latin ` - rules adjusted to latin texts
 - `-p, --polish` - rules adjusted to polish texts (default)
+- `-h, --humdrum` - output organized in humdrum spines, one spine for one verse
 
 ###### Demo:
 
@@ -57,7 +60,140 @@ output:
 
 ```
 ROZ-DZIAŁ 1
-Przy-szedł no-wy rok 1655. Sty-czeń był mroź-ny, a-le su-chy; zi-ma tę-ga przy-kry-ła Żmudź świę-tą gru-bym na ło-kieć, bia-łym ko-żu-chem; la-sy gię-ły się i ła-ma-ły pod ob-fi-tą o-kiś-cią, śnieg olś-nie-wał o-czy w_dzień przy słoń-cu, a no-cą przy księ-ży-cu mi-go-ta-ły ja-ko-by is-kry nik-ną-ce po stę-ża-łej od mro-zu po-wierzch-ni; zwierz zbli-żał się do miesz-kań ludz-kich, a u-bo-gie sza-re ptac-two stu-ka-ło dzio-ba-mi do szyb sze-dzią i śnież-ny-mi kwia-ta-mi o-kry-tych. 
+Przy-szedł no-wy rok 1655. Sty-czeń był mroź-ny, a-le su-chy; zi-ma tę-ga przy-kry-ła Żmudź świę-tą gru-bym na ło-kieć, bia-łym ko-żu-chem; la-sy gię-ły się i ła-ma-ły pod ob-fi-tą o-kiś-cią, śnieg olś-nie-wał o-czy w_dzień przy słoń-cu, a no-cą przy księ-ży-cu mi-go-ta-ły ja-ko-by is-kry nik-ną-ce po stę-ża-łej od mro-zu po-wierzch-ni; zwierz zbli-żał się do miesz-kań ludz-kich, a u-bo-gie sza-re ptac-two stu-ka-ło dzio-ba-mi do szyb sze-dzią i śnież-ny-mi kwia-ta-mi o-kry-tych.
 
-Pew-ne-go wie-czo-ra sie-dzia-ła pan-na A-lek-sand-ra w_iz-bie cze-lad-nej wraz z_dziew-czę-ta-mi dwor-ski-mi. Daw-ny to był zwy-czaj Bil-le-wi-czów, że gdy goś-ci nie by-ło, to z_cze-la-dzią spę-dza-li wie-czo-ry śpie-wa-jąc pieś-ni po-boż-ne i przyk-ła-dem swym pros-tac-two bu-du-jąc. Tak też czy-ni-ła i pan-na A-lek-sand-ra, a to tym łac-niej, że mię-dzy jej dziew-ka-mi dwor-ski-mi sa-me by-ły pra-wie szlach-cian-ki, sie-ro-ty bar-dzo u-bo-gie. Te ro-bo-tę wszel-ką, choć-by naj-grub-szą, speł-nia-ły i przy pa-niach słu-żeb-ny-mi by-ły, a w_za-mian za to ćwi-czy-ły się w_o-by-czaj-noś-ci, lep-sze-go doz-na-jąc od pros-tych dzie-wek trak-to-wa-nia. By-ły jed-nak mię-dzy ni-mi i chłop-ki, mo-wą głów-nie się róż-nią-ce, bo wie-le z_nich po pol-sku nie u-mia-ło. 
+Pew-ne-go wie-czo-ra sie-dzia-ła pan-na A-lek-sand-ra w_iz-bie cze-lad-nej wraz z_dziew-czę-ta-mi dwor-ski-mi. Daw-ny to był zwy-czaj Bil-le-wi-czów, że gdy goś-ci nie by-ło, to z_cze-la-dzią spę-dza-li wie-czo-ry śpie-wa-jąc pieś-ni po-boż-ne i przyk-ła-dem swym pros-tac-two bu-du-jąc. Tak też czy-ni-ła i pan-na A-lek-sand-ra, a to tym łac-niej, że mię-dzy jej dziew-ka-mi dwor-ski-mi sa-me by-ły pra-wie szlach-cian-ki, sie-ro-ty bar-dzo u-bo-gie. Te ro-bo-tę wszel-ką, choć-by naj-grub-szą, speł-nia-ły i przy pa-niach słu-żeb-ny-mi by-ły, a w_za-mian za to ćwi-czy-ły się w_o-by-czaj-noś-ci, lep-sze-go doz-na-jąc od pros-tych dzie-wek trak-to-wa-nia. By-ły jed-nak mię-dzy ni-mi i chłop-ki, mo-wą głów-nie się róż-nią-ce, bo wie-le z_nich po pol-sku nie u-mia-ło.
+```
+
+##### humdrum output
+
+If you want to get your output as humdrum data use `-h` option. It will organize all the verses in `**text` spines. It will also switch hyphenation to the one used in humdrum syntax.
+
+input:
+
+```
+
+
+Wieczny Boże, nie najdziesz pychy w sercu moim,
+Anim ja zwykł przenosić chudszych okiem swoim,
+Ani się ja na wielkie nazbyt kaszę rzeczy,
+Ani się ja nad rozum wysadzam człowieczy.
+
+Niechaj wiecznie nie uznam, Panie, łaski Twojej,
+Jeslim ja nie poniżył niżej dusze swojej,
+Niż jeszcze mój stan niesie; równie więc tak licha
+Dziecina zostawiona do matki swej wzdycha.
+
+To jest kształt myśli moich, ani ja mam sobie
+Pewniejszego ratunku, jeno ufać Tobie.
+U Pana ma pociechy szukać i obrony,
+Kto nie chce być w nadziei swojej omylony.
+
+```
+
+output:
+
+```
+**text	**text	**text
+Wiecz-	Nie-	To
+-ny	-chaj	jest
+Bo-	wiecz-	kształt
+-że,	-nie	myś-
+nie	nie	-li
+naj-	uz-	mo-
+-dziesz	-nam,	-ich,
+py-	Pa-	a-
+-chy	-nie,	-ni
+w_ser-	ła-	ja
+-cu	-ski	mam
+mo-	Two-	so-
+-im,	-jej,	-bie
+A-	Jes-	Pew-
+-nim	-lim	-niej-
+ja	ja	-sze-
+zwykł	nie	-go
+prze-	po-	ra-
+-no-	-ni-	-tun-
+-sić	-żył	-ku,
+chud-	ni-	je-
+-szych	-żej	-no
+o-	du-	u-
+-kiem	-sze	-fać
+swo-	swo-	To-
+-im,	-jej,	-bie.
+A-	Niż	U
+-ni	jesz-	Pa-
+się	-cze	-na
+ja	mój	ma
+na	stan	po-
+wiel-	nie-	-cie-
+-kie	-sie;	-chy
+naz-	rów-	szu-
+-byt	-nie	-kać
+ka-	więc	i
+-szę	tak	ob-
+rze-	li-	-ro-
+-czy,	-cha	-ny,
+A-	Dzie-	Kto
+-ni	-ci-	nie
+się	-na	chce
+ja	zos-	być
+nad	-ta-	w_na-
+ro-	-wio-	-dziei
+-zum	-na	swo-
+wy-	do	-jej
+-sa-	mat-	o-
+-dzam	-ki	-my-
+czło-	swej	-lo-
+-wie-	wzdy-	-ny.
+-czy.	-cha.	.
+*-	*-	*-
+```
+
+
+## ASSIGN SYLLABLES
+
+##### Overview
+
+**assign-syllables** was created to underlay multiple verses of lyrics. All you need is:
+
+- humdrum file in which there's only one verse underlayed for each voice:
+
+```
+**kern	**text
+*clefG2	*
+4c	Lo-
+4d	-rem
+4e	ip-
+4f	-sum
+=	=
+*-	*-
+```
+
+- humdrum file with all the verses of text (first verse from music file will be replaced with the one form text file):
+
+```
+**text	**text	**text	**text	**text	**text	**text	**text	**text	**text
+Lo-	Con-	a-	e-	in-	ut	et	Du-	Ex-	a-
+-rem	-sec-	-di-	-lit	-ci-	la-	do-	-is	-cep-	-nim
+ip-	-te-	-pis-	sed	-di-	-bo-	-lo-	au-	-tur	id
+-sum	-tur	-cing	do	-dunt	-re	-re	-te	sint	est
+*-	*-	*-	*-	*-	*-	*-	*-	*-	*-
+```
+
+##### Usage
+
+`assign-syllables [music-file].krn [text-file].krn`
+
+##### output
+
+```
+**kern	**text	**text	**text	**text	**text	**text	**text	**text	**text	**text
+*clefG2	*	*	*	*	*	*	*	*	*	*
+4c	Lo-	Con-	a-	e-	in-	ut	et	Du-	Ex-	a-
+4d	-rem	-sec-	-di-	-lit	-ci-	la-	do-	-is	-cep-	-nim
+4e	ip-	-te-	-pis-	sed	-di-	-bo-	-lo-	au-	-tur	id
+4f	-sum	-tur	-cing	do	-dunt	-re	-re	-te	sint	est
+=	=	=	=	=	=	=	=	=	=	=
+*-	*-	*-	*-	*-	*-	*-	*-	*-	*-	*-
 ```

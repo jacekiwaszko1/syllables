@@ -12,11 +12,13 @@ Getopt::Long::Configure("bundling");
 my $latinQ;
 my $polishQ;
 my $humQ;
+my $verseCountQ;
 
 GetOptions (
 "l|latin" => \$latinQ,
 "p|polish" => \$polishQ,
 "h|humdrum" => \$humQ,
+"c|count" => \$verseCountQ,
 );
 
 
@@ -213,17 +215,29 @@ if ($humQ) {
   my $verseNumber = 0;
   my $wordON;
 
+  my @verseLineCount;
+
   for (my $l = 0; $l < @syllables; $l++) {
     if ($syllables[$l] =~ /^\n\n/ && $verse[$verseNumber]) {
-      $verse[$verseNumber] .= "*-\n";
+      #$verse[$verseNumber] .= "*-\n";
       $verseNumber++;
     }
     if (!$verse[$verseNumber] && $syllables[$l + 1]) {
-      $verse[$verseNumber] .= "**text\n*verse$verseNumber\n";
+      $verse[$verseNumber] .= "**text\n";
+
+      $verseLineCount[$verseNumber]++;
+
+      if ($verseCountQ) {
+        my $numberToDisplay = $verseNumber + 1;
+        $verse[$verseNumber] .= "*verse$numberToDisplay\n";
+        $verseLineCount[$verseNumber]++;
+      }
+
     }
 
     my $syllable = $syllables[$l];
     $syllable =~ s/\n//g;
+    $syllable =~ s/ //g;
 
     if ($syllable eq "") {
       next;
@@ -231,8 +245,10 @@ if ($humQ) {
 
     if (!$wordON) {
       $verse[$verseNumber] .= "$syllable\n";
+      $verseLineCount[$verseNumber]++;
     } else {
       $verse[$verseNumber] .= "-$syllable\n";
+      $verseLineCount[$verseNumber]++;
     }
 
     if ($syllables[$l] =~ /-$/) {
@@ -243,20 +259,42 @@ if ($humQ) {
 
   }
 
+  my $maxVerseLineCount;
+  for (my $o = 0; $o < @verseLineCount; $o++) {
+    if ($verseLineCount[$o] > $maxVerseLineCount) {
+      $maxVerseLineCount = $verseLineCount[$o];
+    }
+  }
+
+
+
+
   my @humOutput;
   for (my $m = 0; $m < @verse; $m++) {
     my @oneVerse = split("\n", $verse[$m]);
-    for (my $n = 0; $n < @oneVerse; $n++) {
-      $humOutput[$n] .= $oneVerse[$n];
+    for (my $n = 0; $n < $maxVerseLineCount; $n++) {
+      if ($oneVerse[$n]) {
+        $humOutput[$n] .= $oneVerse[$n];
+      } else {
+        $humOutput[$n] .= ".";
+      }
       if ($m + 1 < @verse) {
         $humOutput[$n] .= "\t";
       }
-
     }
-
   }
 
+
   print join("\n", @humOutput);
+  print "\n";
+  for (my $p = 0; $p < @verse; $p++) {
+    print "*-";
+    if ($p + 1 < @verse) {
+      print "\t";
+    }
+  }
+
+  print "\n";
 
 } else {
   print @syllables;
