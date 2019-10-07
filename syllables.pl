@@ -37,7 +37,7 @@ if ($latinQ) {
   @diphthongs = qw(gr tw kr sk cz sz rz ch ie ia dz iu io ió ię ią eu au);
   @triphthongs = qw(grz krz prz);
 } else {
-  @diphthongs = qw(gr tw sk kr cz sz rz ch ie ia dz iu io ió ią ię);
+  @diphthongs = qw(gr tw sk kr cz sz rz ch ie ia dz iu io ió ią ię eu au);
   @triphthongs = qw(grz krz prz);
 }
 
