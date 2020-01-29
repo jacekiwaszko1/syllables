@@ -4,6 +4,7 @@ use strict;
 
 my $kernFile = $ARGV[0];
 my $textFile = $ARGV[1];
+my $debugQ;
 
 if (!$kernFile || !$textFile || @ARGV > 2 ) {
   print "ERROR: wrong arguments\n\tassign-syllables [file.krn] [text.krn]\n";
@@ -23,8 +24,9 @@ my $textLine = $grepText[0];
 my $verseCount = split("\t", $textLine);
 
 
-my @grepKern = grep ("\*\*kern", @kern);
+my @grepKern = grep(/^\*\*kern/, @kern);
 my $kernLine = $grepKern[0];
+print "kernLine = $kernLine\n" if $debugQ;
 my @spineMap = split("\t", $kernLine);
 
 my $textCount;
@@ -44,6 +46,7 @@ for (my $g = 0; $g < $textCount; $g++) {
 for (my $i = 0; $i < @kern; $i++) {
   my $voiceWithTextCount = 0;
   if ($kern[$i] =~ /^!!/) {
+    print $kern[$i];
     next;
   }
   my @line = split("\t", $kern[$i]);

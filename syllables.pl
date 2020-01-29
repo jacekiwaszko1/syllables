@@ -13,18 +13,20 @@ my $latinQ;
 my $polishQ;
 my $humQ;
 my $verseCountQ;
+my $devidedQ;
 
 GetOptions (
 "l|latin" => \$latinQ,
 "p|polish" => \$polishQ,
 "h|humdrum" => \$humQ,
 "c|count" => \$verseCountQ,
+"d|devided" => \$devidedQ,
 );
 
 
 my @line = <>;
 
-my @vowels = qw(a ą e ę i o ó u y æ);
+my @vowels = qw(a ą e ę i o ó u y æ ÿ );
 my @consonants = qw(b c ć d f g h j k l ł m n ń p q r s ś t v w x z ź ż);
 my @interpunctions = qw(, . ; : ? ! " ' "(" ")" );
 my @diphthongs;
@@ -54,7 +56,6 @@ if ( -t STDIN) {
   }
 }
 
-
 foreach my $cons (@consonants) {
   $cons = decode 'utf-8', $cons;
 }
@@ -67,13 +68,9 @@ foreach my $diphs (@diphthongs) {
   $diphs = decode 'utf-8', $diphs;
 }
 
-
-
 for (my $i = 0; $i < @line; $i++) {
   chomp $line[$i];
   #print $line[$i], "\t";
-
-
   my @words = split(" ", $line[$i]);
   my $previous;
   my $next;
@@ -86,19 +83,14 @@ for (my $i = 0; $i < @line; $i++) {
       if ($letters[$k] =~ /^\s$/) {
         $letters[$k] = "";
       }
-
       my $type = checkType($letters[$k]);
-
       #print "$letters[$k]";
       #print "($type)";
-
       $next = $letters[$k+1];
       $next2 = $letters[$k+2];
-
       ######################
       ### Jednoliterówki ###
       ######################
-
       if (!$previous && !$next) {
         $syllables[$syllableCount] .= $letters[$k];
         if ($type eq "v") {
@@ -110,11 +102,9 @@ for (my $i = 0; $i < @line; $i++) {
           $previous = "$letters[$k]";
           $syllables[$syllableCount] .= "_";
         }
-
       ########################
       ### Ostatnia literka ###
       ########################
-
       } elsif ($previous && !$next) {
         if ($latinQ) {
           if (checkType($previous) eq "v" && checkType($letters[$k]) eq "v" && !checkDiphthongs($previous, $letters[$k])) {
@@ -122,28 +112,20 @@ for (my $i = 0; $i < @line; $i++) {
             $syllableCount++;
             $previous = "-";
           }
-
         }
-
         $syllables[$syllableCount] .= "$letters[$k] ";
         $syllableCount++;
         $previous = "";
         $vowelQ = "";
-
       ########################
       ### Pierwsza literka ###
       ########################
-
       } elsif (!$previous && $next) {
         $syllables[$syllableCount] .= "$letters[$k]";
         $previous = $letters[$k];
-
-
-
       ########################
       ### Literki środkowe ###
       ########################
-
     } elsif ($previous && $next) {
         if (checkTriphthongs($previous, $letters[$k], $next)) {
           $syllables[$syllableCount] .= "$letters[$k]";
@@ -155,12 +137,7 @@ for (my $i = 0; $i < @line; $i++) {
             $previous = "";
             $vowelQ = "";
           }
-
           $k++;
-
-
-
-
         } elsif (!$vowelQ) {
           if (checkDiphthongs($previous, $letters[$k])) {
             $syllables[$syllableCount] .= "$letters[$k]";
@@ -169,16 +146,11 @@ for (my $i = 0; $i < @line; $i++) {
             $syllables[$syllableCount] .= "$letters[$k]";
             $previous = $letters[$k];
           }
-
-
         } elsif ($vowelQ) {
-
           if ($type eq "v" && checkDiphthongs($previous, $letters[$k])) {
               $syllables[$syllableCount] .= "$letters[$k]";
               $previous = $letters[$k];
-
           } else {
-
             if (checkForEnd($previous, $letters[$k], $next, $k, @letters)) {
               $syllables[$syllableCount] .= "-";
               $syllableCount++;
@@ -189,25 +161,23 @@ for (my $i = 0; $i < @line; $i++) {
               $syllables[$syllableCount] .= "$letters[$k]";
               $previous = $letters[$k];
             }
-
           }
-
-
-
         }
-
-
       }
       if ($type eq "v") {
         $vowelQ++;
       }
     }
-
-    #print " ";
   }
   $syllables[$syllableCount] .= "\n";
-  #print "\n";
 }
+
+if ($devidedQ) {
+  foreach my $x (@syllables) {
+    $x =~ s/--/-/;
+  }
+}
+
 
 ## print data as humdrum spines.
 if ($humQ) {
