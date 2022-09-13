@@ -197,3 +197,5 @@ ip-	-te-	-pis-	sed	-di-	-bo-	-lo-	au-	-tur	id
 =	=	=	=	=	=	=	=	=	=	=
 *-	*-	*-	*-	*-	*-	*-	*-	*-	*-	*-
 ```
+
+[![DOI](https://zenodo.org/badge/195084077.svg)](https://zenodo.org/badge/latestdoi/195084077)
