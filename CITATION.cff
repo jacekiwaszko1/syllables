@@ -1,0 +1,11 @@
+cff-version: 0.1.1
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Iwaszko"
+  given-names: "Jacek"
+  orcid: "https://orcid.org/0000-0002-5169-0721"
+title: "syllables - divide words into syllables and add hyphenation"
+version: 0.1.1
+doi: 10.5281/zenodo.7074304
+date-released: 2022-09-13
+url: "https://github.com/jacekiwaszko1/syllables"
